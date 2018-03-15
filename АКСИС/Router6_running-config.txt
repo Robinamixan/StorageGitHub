@@ -1,0 +1,100 @@
+!
+version 12.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname Router
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 155.206.13.162 255.255.255.240
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 190.219.2.2 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/0
+ ip address 165.45.188.2 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet1/1
+ ip address 192.168.2.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router eigrp 100
+ network 192.168.2.0
+ network 190.219.0.0
+ network 160.45.0.0
+ network 155.206.0.0
+ no auto-summary
+!
+ip classless
+ip route 192.168.1.0 255.255.255.0 57.52.34.224 
+ip route 57.52.34.224 255.255.255.224 12.73.40.1 
+ip route 12.73.40.0 255.255.248.0 155.206.13.161 
+ip route 119.0.0.0 255.128.0.0 190.219.2.1 
+ip route 74.128.0.0 255.128.0.0 190.219.2.1 
+ip route 142.207.0.0 255.255.255.240 155.206.13.161 
+ip route 214.177.229.0 255.255.255.128 119.0.0.1 
+ip route 203.203.36.112 255.255.255.240 74.128.0.2 
+ip route 198.104.77.80 255.255.255.240 74.128.0.2 
+ip route 192.168.3.0 255.255.255.0 119.0.0.1 
+!
+ip flow-export version 9
+!
+!
+!
+no cdp run
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
