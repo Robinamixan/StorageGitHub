@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Create room
+{% endblock title %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" >
+            <div id="room_create_panel">
+                {{ form_start(form) }}
+
+                {{ form_widget(form.room_name, {'attr': {
+                    'title': 'Enter room name',
+                    'class': 'form-control',
+                    'placeholder':'Room Name',
+                    'pattern':'\\w+',
+                }}) }}
+
+                {{ form_row(form.room_name) }}
+                {{ form_row(form.room_description) }}
+                {{ form_row(form.flag_add_password) }}
+
+                {{ form_widget(form.password.first, {'attr': {
+                    'class': 'form-control',
+                    'placeholder':'Password',
+                    'title': 'Password must contain at least 6 characters',
+                    'pattern':'.{6,}',
+                }}) }}
+
+                {{ form_widget(form.password.second, {'attr': {
+                    'class': 'form-control',
+                    'placeholder':'Password',
+                    'title': 'Password must contain at least 6 characters',
+                    'pattern':'.{6,}',
+                }}) }}
+
+                {{ form_row(form.create) }}
+                {{ form_end(form) }}
+            </div>
+
+
+
+        </div>
+
+        <div class="col-md-2"></div>
+    </div>
+
+    {# display navigation #}
+    <div class="navigation">
+
+    </div>
+
+{% endblock body %}
+
+{% block stylesheets %}
+    <style>
+        #room_create_panel {
+            border: 2px solid grey;
+            border-radius: 15px;
+            padding: 10px;
+            background-color: #384452;
+            margin-bottom: 15px;
+        }
+
+        #list_quizzes .count h3 {
+            color: white;
+        }
+
+        input[type="checkbox"]{
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .label_info {
+            border: 1px solid grey;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 0;
+            margin-right: 3px;
+            color: white;
+        }
+
+        .label_info.pass {
+            background-color: green;
+        }
+
+        .label_info.nopass {
+            background-color: #0b6ec4;
+        }
+    </style>
+{% endblock  stylesheets%}
+
+
+

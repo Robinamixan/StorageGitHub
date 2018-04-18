@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    List of rooms
+{% endblock title %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div id="list_rooms" class="list_rooms">
+                <div class="count">
+                    <h3>All rooms - {{ pagination.getTotalItemCount }}</h3>
+                </div>
+                <div id="rooms_control_panel">
+                    <a class="btn btn-default" href="{{ path('room_add') }}">New Room</a>
+                </div>
+                <div id="postlist">
+                    {% if  pagination.getTotalItemCount > 0 %}
+                        {% for room in pagination %}
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <div class="text-center">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <a class="pull-left"
+                                                    style="color: black; font-size: 2em; font-family: 'Raleway', sans-serif;">{{ room.roomName }}</a>
+                                            </div>
+                                            {#<div class="col-sm-3">#}
+                                            {#<h4 class="pull-right">#}
+                                            {#<small>{{ quiz.date_of_create | date('Y-m-d') }}</small>#}
+                                            {#</h4>#}
+                                            {#</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+
+                                    <div style="width: 100%; color: black;">
+                                    {{ room.roomDescription }}
+                                    </div>
+                                    {#<div>#}
+                                    {#Users passed -#}
+                                    {#{% if quiz.users_amount == null %}#}
+                                    {#<b>0</b>#}
+                                    {#{% else %}#}
+                                    {#<b>{{ quiz.users_amount }}</b>#}
+                                    {#{% endif %}#}
+                                    {#</div>#}
+                                    {#<div>#}
+                                    {#{% if quiz.users_amount != null %}#}
+                                    {#Best User - <b>{{ quiz.best_player }}</b> <{{ quiz.right_amount }}>#}
+                                    {#{% endif %}#}
+
+                                    {#</div>#}
+                                </div>
+
+                                <div class="panel-footer" style="height: 50px; padding-top: 6px">
+
+                                    {#{% if quiz.flag_passed %}#}
+                                    {#<p class="pull-left label_info pass"> Passed </p>#}
+                                    {#<p class="pull-left label_info pass"> Your result - {{ quiz.result }} </p>#}
+                                    {#<a class="btn btn-info pull-right" href="{{ path('game_result', {'id_passage': quiz.id_passage}) }}">Result</a>#}
+                                    {#{% else %}#}
+                                    {#<p class="pull-left label_info nopass"> Not passed </p>#}
+                                    {#<a class="btn btn-primary pull-right" href="{{ path('game', {'id_quiz': quiz.id_quiz}) }}">Start</a>#}
+                                    {#{% endif %}#}
+
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+                        <h3>There are no room now</h3>
+                    {% endif %}
+                </div>
+                {{ knp_pagination_render(pagination) }}
+            </div>
+
+        </div>
+
+        <div class="col-md-2"></div>
+    </div>
+
+    {# display navigation #}
+    <div class="navigation">
+
+    </div>
+
+{% endblock body %}
+
+{% block stylesheets %}
+    <style>
+        #rooms_control_panel {
+            margin: 10px;
+        }
+
+        .list_rooms {
+            border: 2px solid grey;
+            border-radius: 15px;
+            padding: 10px;
+            background-color: #384452;
+            margin-bottom: 15px;
+        }
+
+        #list_rooms .count h3 {
+            color: white;
+        }
+
+        .label_info {
+            border: 1px solid grey;
+            border-radius: 5px;
+            padding: 5px;
+            margin-top: 0;
+            margin-right: 3px;
+            color: white;
+        }
+
+        .label_info.pass {
+            background-color: green;
+        }
+
+        .label_info.nopass {
+            background-color: #0b6ec4;
+        }
+    </style>
+{% endblock  stylesheets %}
+
+
+
