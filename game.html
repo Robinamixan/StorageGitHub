@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="1000" height="800" style="border: 1px solid"></canvas>
+<script type="text/javascript">
+
+var gameEngine;
+
+var fpsInterval, now, then, elapsed;
+
+var gameEngineStart = function (callback, fps) {
+  fpsInterval = 1000 / fps;
+  then = Date.now();
+
+  gameEngine = callback;
+  gameEngineStep();
+}
+
+var gameEngineStep = function () {
+  now = Date.now();
+  elapsed = now - then;
+  if (elapsed > fpsInterval) {
+    then = now - (elapsed % fpsInterval);
+    gameEngine();
+  }
+  nextGameStep(gameEngineStep);
+}
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var gameWindow = {
+  width: canvas.width,
+  height: canvas.height
+};
+
+var nextGameStep = (function () {
+  return requestAnimationFrame  ||
+    mozRequestAnimationFrame    ||
+    webkitRequestAnimationFrame ||
+    oRequestAnimationFrame      ||
+    msRequestAnimationFrame     ||
+    function (callback) {
+      window.setTimeout(callback, 1000/60);
+    };
+})();
+
+function drawField () {
+  for (var y = 0; y < gameWindow.height; y += 20) {
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineWidth = 1;
+    context.lineCap = 'round';
+    context.lineTo(gameWindow.width, y);
+    context.stroke();
+  }
+
+  for (var x = 0; x < gameWindow.width; x += 20) {
+    context.beginPath();
+    context.moveTo(x, 0);
+    context.lineWidth = 1;
+    context.lineCap = 'round';
+    context.lineTo(x, gameWindow.height);
+    context.stroke();
+  }
+}
+
+function clearField () {
+  context.clearRect(0, 0, gameWindow.width, gameWindow.height);
+}
+
+class GameObject {
+  constructor(xpos, ypos, xpad, ypad, xsi, ysi, xsp, ysp) {
+    this.position = {x: xpos, y: xpos};
+    this.pading = {x: xpad, y: ypad};
+    this.size = {x: xsi, y: ysi};
+    this.speed = {x: xsp, y: ysp};
+  }
+
+  setDestination(xd, yd) {
+    this.destination = {x: xd, y: yd};
+  }
+
+  updatePosition() {
+    this.position.x += this.speed.x;
+    this.position.y += this.speed.y;
+  }
+
+  checkVector() {
+    var sizeCellX = this.size.x + this.pading.x * 2;
+    var sizeCellY = this.size.y + this.pading.y * 2;
+
+    if ((this.position.x >= gameWindow.width - sizeCellX) || (this.position.x <= this.pading.x)) {
+      this.speed.x = (-1) * this.speed.x;
+    }
+
+    if ((this.position.y >= gameWindow.height - sizeCellY) || (this.position.y <= this.pading.y)) {
+      this.speed.y = (-1) * this.speed.y;
+    }
+  }
+
+  draw(color) {
+    context.fillStyle = color;
+    context.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
+  }
+}
+
+gameObject1 = new GameObject(5, 5, 5, 5, 30, 30, 20, 20);
+gameObject2 = new GameObject(85, 85, 5, 5, 30, 30, 20, -20);
+
+function gameLoop () {
+
+  gameObject1.updatePosition();
+  gameObject1.checkVector();
+
+  gameObject2.updatePosition();
+  gameObject2.checkVector();
+
+  clearField();
+//  drawField();
+  gameObject1.draw('red');
+  gameObject2.draw('blue');
+}
+
+gameEngineStart(gameLoop, 10);
+
+
+
+</script>
+</body>
+</html>
